@@ -25,12 +25,12 @@ function Login() {
     return (
         <div className="container pt-5">
             <div className='row  justify-content-center'>
-                <div className='col-5'>
+                <div className='col-5 text-center'>
                     {isLoading ? (
                         <Spinner animation="grow" />
                     ) : (
                         <Form className="loginForm" onSubmit={submitLogin}>
-                            <h3 className='text-center mb-4'>Вход</h3>
+                            <h3 className='mb-4'>Вход</h3>
                             <Form.Group className='form-outline mb-4'>
                                 <Form.Control
                                     type="text"

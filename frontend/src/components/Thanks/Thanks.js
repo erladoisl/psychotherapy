@@ -41,6 +41,12 @@ function Thanks() {
         set_thanks_emotions([]);
     });
 
+    const set_thanks_emotions_level = (value, index) => {
+        let new_thanks_emotions = thanks_emotions
+        new_thanks_emotions[index] = {...new_thanks_emotions[index], 'level' : value};
+        set_thanks_emotions(new_thanks_emotions);
+    }
+
     return (
         <div className='container'>
             <div className="mt-5 p-5 mb-4 rounded bg-light" >
@@ -53,26 +59,47 @@ function Thanks() {
             </div>
             {show_thanks_form && (
                 <form className="card p-2" onSubmit={new_thanks}>
+                    <h4 className="ms-3 mb-3">Новое воспоминание</h4>
                     <div className="input-group mb-2">
                         <input
                             type="textarea"
                             className="form-control"
-                            placeholder="Опиши ситуацию"
+                            placeholder="Опиши его"
                             value={thanks_description}
                             onChange={e => set_thanks_description(e.target.value)}
                         />
-                        <button type="submit" className="btn btn-secondary">Добавить</button>
+                        <button type="submit" className="btn btn-secondary">Сохранить</button>
                     </div>
-                    <div>
-
+                    <br />
+                    <div className="">
+                        <label htmlFor="thanks_emotions" className="form-label ms-1">
+                            Добавь несколько замеченных эмоций для фиксации внимания на полезном:
+                        </label>
                         <Select
                             closeMenuOnSelect={false}
                             defaultValue={thanks_emotions}
+                            placeholder='Выбери эмоции из списка...'
                             isMulti
                             onChange={((event) => { set_thanks_emotions(event) })}
                             options={emotions}>
                         </Select>
                     </div>
+                    <br />
+                    {thanks_emotions.length !== 0 && (
+                        <div className="input-group mb-2">
+                            <label htmlFor="thanks_emotions_level" className="form-labell ms-1">
+                                Отметь, насколько сильным было выражение эмоций:
+                            </label>
+                            {thanks_emotions.map((emotion, index) => (
+                                <div key={index} className="input-group mb-2">
+                                    <label htmlFor="emotions_level" className="mx-2 form-labell ms-1">
+                                       {emotion.label.toUpperCase()}
+                                    </label>
+                                    <input type="range" min="1" max="10" value={emotion?.level} onChange={(e) => set_thanks_emotions_level(e.target.value, index)}/>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </form>
             )}
             {thanksLoading ? (
@@ -81,7 +108,7 @@ function Thanks() {
                 thanks.map((item, index) => (
                     <div key={item?.uuid} className='container'>
                         {item?.description}
-                        {item.emotions.length !== 0 && `(${item.emotions.map((emotion, index) => emotion.name).join(', ')})`}
+                        {item.emotions.length !== 0 && `(${item.emotions.map((emotion) => emotion.name + '-' + emotion.level).join(', ')})`}
                     </div>
                 )))}
 

@@ -31,11 +31,12 @@ class ThanksView(APIView):
         if desription:
             thanks = Thanks.objects.create(
                 user=request.user, description=desription)
-            
-            emotions = Emotion.objects.filter(id__in=[item['value'] for item in thanks_emotions])
-            
-            for emotion in emotions:
-                ThanksEmotion.objects.create(thanks=thanks, emotion=emotion)
+            print(thanks_emotions)
+            for item in thanks_emotions:
+                ThanksEmotion.objects.create(
+                    thanks=thanks, 
+                    emotion=Emotion.objects.get(id=item['value']), 
+                    level=item['level'])
 
             return Response(ThanksSerializer(thanks).data, status=status.HTTP_201_CREATED)
 

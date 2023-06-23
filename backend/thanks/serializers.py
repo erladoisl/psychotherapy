@@ -26,8 +26,14 @@ class ThanksSerializer(serializers.ModelSerializer):
     emotions = serializers.SerializerMethodField('get_emotions')
 
     def get_emotions(self, obj):
-        return [ThankEmotionSerializer(emotion).data for emotion in ThanksEmotion.objects.filter(thanks=obj)]
+        return [ThankEmotionSerializer(emotion).data for emotion in obj.thanksemotion_set.all()]
 
+    def create(self, validated_data):
+        """
+        Create and return a new `Thanks` instance, given the validated data.
+        """
+        return Thanks.objects.create(**validated_data, user=self.context['request'].user)
+    
     class Meta:
         model = Thanks
         fields = ('uuid', 'description', 'created_at', 'emotions')

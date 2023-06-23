@@ -6,6 +6,7 @@ import { selectUser, checkStatus, selectIsLoggedIn, selectIsLoading } from './re
 import Home from "./components/Home/Home";
 import Login from "./components/User/Login/Login";
 import Registration from "./components/User/Registration/Registration";
+import Thanks from "./components/Thanks/Thanks";
 import NotFound from "./components/NotFound/NotFound";
 import Header from "./components/Header/Header";
 
@@ -26,6 +27,7 @@ function App() {
 
           <Routes>
             <Route exact path="/" element={<Home />} />
+            <Route exact path="/thanks" element={<Thanks/>} />
             <Route exact path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -11,7 +11,7 @@ class Thanks(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.descriontion}"
+        return f"{self.description}"
 
     class Meta:
         ordering = ('created_at',)

@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, NavLink } from 'react-router-dom';
 import { Form, Button, Spinner } from 'react-bootstrap';
 
-import { login, selectAuthError, selectIsLoggedIn, selectIsLoading } from '../../../reducers/userSlice';
+import {
+    login,
+    selectAuthError,
+    selectIsLoggedIn,
+    selectIsLoading
+} from '../../../reducers/userSlice';
 
 function Login() {
     const dispatch = useDispatch();

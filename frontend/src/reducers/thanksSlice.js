@@ -56,7 +56,7 @@ export const selectIsLoggedIn = state => !!(!state.thanks.loading && state.thank
 export const getThanks = () => dispatch => {
 	dispatch(setLoading(true));
 	instance
-		.get('/thanks/thanks')
+		.get('/thanks/')
 		.then(res => {
 			dispatch(loadThanks(res.data))
 		})
@@ -69,10 +69,10 @@ export const getThanks = () => dispatch => {
 		});
 };
 
-export const newThanks = (description) => dispatch => {
+export const newThanks = (description, thanks_emotions) => dispatch => {
 	dispatch(setLoading(true));
 	instance
-		.post('/thanks/thanks/', { description })
+		.post('/thanks/', { description, thanks_emotions })
 		.then(res => {
 			dispatch(loadNewThanks(res.data))
 		})

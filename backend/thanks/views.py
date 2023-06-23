@@ -2,10 +2,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from thanks.serializers import ThanksSerializer
 from rest_framework.views import APIView
-from thanks.models import Thanks
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from user.serializers import UserSerializer
+from thanks.models import Thanks, ThanksEmotion
+from emotion.models import Emotion
 
 
 class ThanksView(APIView):
@@ -25,14 +26,21 @@ class ThanksView(APIView):
     def post(self, request, *args, **kwargs):
         ''' Create new todays thanks by authenticated user '''
         desription = request.data.get('description', None)
+        thanks_emotions = request.data.get('thanks_emotions', [])
 
         if desription:
             thanks = Thanks.objects.create(
                 user=request.user, description=desription)
+            
+            emotions = Emotion.objects.filter(id__in=[item['value'] for item in thanks_emotions])
+            
+            for emotion in emotions:
+                ThanksEmotion.objects.create(thanks=thanks, emotion=emotion)
 
             return Response(ThanksSerializer(thanks).data, status=status.HTTP_201_CREATED)
 
         return Response({'err': 'Ошибка ввода данных'}, status=status.HTTP_400_BAD_REQUEST)
+
 
     def delete(self, request, *args, **kwargs):
         ''' Deleting authenticated user's thanks by uuid '''

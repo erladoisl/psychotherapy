@@ -1,3 +1,4 @@
+import Select from 'react-select'
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
@@ -8,6 +9,10 @@ import {
     getThanks,
     newThanks
 } from '../../reducers/thanksSlice';
+import {
+    selectEmotions,
+    getEmotions
+} from '../../reducers/emotionSlice';
 
 function Thanks() {
     const dispatch = useDispatch();
@@ -16,17 +21,24 @@ function Thanks() {
         dispatch(getThanks());
     }, [dispatch]);
 
+    useEffect(() => {
+        dispatch(getEmotions(true));
+    }, [dispatch]);
+
     const thanks = useSelector(selectThanks);
     const thanksLoading = useSelector(selectThanksLoading);
     const thanksError = useSelector(selectThanksError);
+    const emotions = useSelector(selectEmotions);
     const [show_thanks_form, set_show_thanks_form] = useState(false);
     const [thanks_description, set_thanks_description] = useState('');
+    const [thanks_emotions, set_thanks_emotions] = useState([]);
 
     const new_thanks = useCallback(e => {
         e.preventDefault();
-        dispatch(newThanks(thanks_description));
+        dispatch(newThanks(thanks_description, thanks_emotions));
         set_thanks_description('');
         set_show_thanks_form(false);
+        set_thanks_emotions([]);
     });
 
     return (
@@ -41,7 +53,7 @@ function Thanks() {
             </div>
             {show_thanks_form && (
                 <form className="card p-2" onSubmit={new_thanks}>
-                    <div className="input-group">
+                    <div className="input-group mb-2">
                         <input
                             type="textarea"
                             className="form-control"
@@ -51,6 +63,16 @@ function Thanks() {
                         />
                         <button type="submit" className="btn btn-secondary">Добавить</button>
                     </div>
+                    <div>
+
+                        <Select
+                            closeMenuOnSelect={false}
+                            defaultValue={thanks_emotions}
+                            isMulti
+                            onChange={((event) => { set_thanks_emotions(event) })}
+                            options={emotions}>
+                        </Select>
+                    </div>
                 </form>
             )}
             {thanksLoading ? (
@@ -59,9 +81,9 @@ function Thanks() {
                 thanks.map((item, index) => (
                     <div key={item?.uuid} className='container'>
                         {item?.description}
+                        {item.emotions.length !== 0 && `(${item.emotions.map((emotion, index) => emotion.name).join(', ')})`}
                     </div>
-                )
-                ))}
+                )))}
 
             {thanksError && (
                 <p className="mt-3" style={{ color: 'red' }}>

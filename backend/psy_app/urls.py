@@ -21,4 +21,5 @@ urlpatterns = [
     path('auth/', include('user.urls')),
     path('thanks/', include('thanks.urls')),
     path('emotions/', include('emotion.urls')),
+    path('tasks/', include('tasks.urls')),
 ]

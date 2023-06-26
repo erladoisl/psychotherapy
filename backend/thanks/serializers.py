@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Thanks, ThanksEmotion
 import config as c
-import traceback
 import logging
 
 fh = logging.FileHandler(c.LOGGER_CONFIG['file'])
@@ -33,7 +32,7 @@ class ThanksSerializer(serializers.ModelSerializer):
         Create and return a new `Thanks` instance, given the validated data.
         """
         return Thanks.objects.create(**validated_data, user=self.context['request'].user)
-    
+
     class Meta:
         model = Thanks
         fields = ('uuid', 'description', 'created_at', 'emotions')

@@ -1,10 +1,7 @@
-from rest_framework.test import APITestCase, APIClient
+from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
-from emotion.models import Emotion
-from thanks.models import Thanks, ThanksEmotion
-from thanks.thanks_tests.model_factory import EmotionFactory, UserFactory, AdminFactory, ThanksEmotionFactory, ThanksFactory
-from user.models import User
+from thanks.thanks_tests.model_factory import EmotionFactory, UserFactory, AdminFactory, ThanksFactory
 
 
 class ThanksTests(APITestCase):
@@ -68,7 +65,7 @@ class ThanksTests(APITestCase):
         response_thanks_list = self.client.get(self.thanks)
         self.assertEqual(1, len(response_thanks_list.data))
 
-    def test_get_thanks_unauthenticated(self):
+    def test_save_thanks_unauthenticated(self):
         response = self.client.post(self.thanks)
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

@@ -2,7 +2,6 @@ from rest_framework import status as s
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import login, logout, authenticate
 from rest_framework.generics import ListCreateAPIView
@@ -23,7 +22,7 @@ log.setLevel(c.LOGGER_CONFIG['level'])
 
 class CustomAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
-        log.debug(f'Trying to authenticate user')
+        log.debug('Trying to authenticate user')
         if request.user.is_authenticated:
             log.debug(
                 f'User {request.user.username} already  is authenticated')
@@ -51,10 +50,10 @@ class CustomAuthToken(ObtainAuthToken):
 
 class Update_password(APIView):
     def put(self, request, *args, **kwargs):
-        log.debug(f'Trying to update users password')
+        log.debug('Trying to update users password')
         if request.user.is_authenticated:
             if request.data['password1'] != request.data['password2']:
-                log.debug(f'Password 1 and 2 do not match')
+                log.debug('Password 1 and 2 do not match')
 
                 return Response(status=s.HTTP_400_BAD_REQUEST)
 
@@ -63,7 +62,7 @@ class Update_password(APIView):
 
             return Response(status=s.HTTP_200_OK)
 
-        log.error(f'Error while updating password: unauthenticated user')
+        log.error('Error while updating password: unauthenticated user')
 
         return Response({'err': 'Неавторизованный доступ'}, status=s.HTTP_400_BAD_REQUEST)
 
@@ -80,10 +79,10 @@ class Logout_user(APIView):
 
 class Register_user(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
-        log.debug(f'User registration...')
+        log.debug('User registration...')
 
         if request.data['password1'] != request.data['password2']:
-            log.debug(f'Password 1 and 2 do not match')
+            log.debug('Password 1 and 2 do not match')
 
             return Response({'err': 'Пароли не совпадают'}, status=s.HTTP_400_BAD_REQUEST)
 
@@ -127,6 +126,6 @@ class UserListCreateView(ListCreateAPIView):
     serializer_class = UsersSerializer
 
     def get_queryset(self):
-        log.debug(f'Getting all users')
+        log.debug('Getting all users')
 
         return User.objects.all()

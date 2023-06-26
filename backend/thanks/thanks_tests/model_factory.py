@@ -1,8 +1,6 @@
-from factory import django, PostGenerationMethodCall
-from factory import django, Faker, PostGenerationMethodCall
+from factory import django, PostGenerationMethodCall, Faker
 from emotion.models import Emotion
 from thanks.models import Thanks, ThanksEmotion
-import random
 from user.models import User
 from datetime import datetime
 
@@ -47,6 +45,6 @@ class ThanksFactory(django.DjangoModelFactory):
 class ThanksEmotionFactory(django.DjangoModelFactory):
     class Meta:
         model = ThanksEmotion
-    
+
     emotion = EmotionFactory.create()
     thanks = ThanksFactory.create()

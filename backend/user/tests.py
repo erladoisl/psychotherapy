@@ -58,9 +58,9 @@ class UserTests(TestCase):
         Assert that usernames must be unique.
         """
         with self.assertRaises(IntegrityError):
-            u1 = User.objects.create_user(
+            User.objects.create_user(
                 username='user1', password='123Testtest123')
-            u2 = User.objects.create_user(
+            User.objects.create_user(
                 username='user1', password='123Testtest123')
 
 

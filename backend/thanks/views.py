@@ -4,7 +4,6 @@ from thanks.serializers import ThanksSerializer
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
-from user.serializers import UserSerializer
 from thanks.models import Thanks, ThanksEmotion
 from emotion.models import Emotion
 

@@ -25,6 +25,11 @@ function Thanks() {
         dispatch(getEmotions(true));
     }, [dispatch]);
 
+    const bd_color = {
+        positive: { 1: '#A9F2B1', 2: '#94D49B', 3: '#89C490', 4: '#80B886', 5: '#72A377', 6: '#6B9970', 7: '#65916A', 8: '#577D5B', 9: '#527556', 10: '#47664B' },
+        negative: { 1: '#FFCDCE', 2: '#F2C2C4', 3: '#E0B4B5', 4: '#D4A9AB', 5: '#C49D9F', 6: '#BD9798', 7: '#AD8B8C', 8: '#9E7E80', 9: '#8F7273', 10: '#826869' }
+    }
+
     const thanks = useSelector(selectThanks);
     const thanksLoading = useSelector(selectThanksLoading);
     const thanksError = useSelector(selectThanksError);
@@ -43,7 +48,7 @@ function Thanks() {
 
     const set_thanks_emotions_level = (value, index) => {
         let new_thanks_emotions = thanks_emotions
-        new_thanks_emotions[index] = {...new_thanks_emotions[index], 'level' : value};
+        new_thanks_emotions[index] = { ...new_thanks_emotions[index], 'level': value };
         set_thanks_emotions(new_thanks_emotions);
     }
 
@@ -93,24 +98,48 @@ function Thanks() {
                             {thanks_emotions.map((emotion, index) => (
                                 <div key={index} className="input-group mb-2">
                                     <label htmlFor="emotions_level" className="mx-2 form-labell ms-1">
-                                       {emotion.label.toUpperCase()}
+                                        {emotion.label.toUpperCase()}
                                     </label>
-                                    <input type="range" min="1" max="10" value={emotion?.level} onChange={(e) => set_thanks_emotions_level(e.target.value, index)}/>
+                                    <input type="range" min="1" max="10" value={emotion?.level} onChange={(e) => set_thanks_emotions_level(e.target.value, index)} />
                                 </div>
                             ))}
                         </div>
                     )}
                 </form>
             )}
-            {thanksLoading ? (
-                <Spinner animation="grow" />
-            ) : (
-                thanks.map((item, index) => (
-                    <div key={item?.uuid} className='container'>
-                        {item?.description}
-                        {item.emotions.length !== 0 && `(${item.emotions.map((emotion) => emotion.name + '-' + emotion.level).join(', ')})`}
+            <div className='album py-5'>
+                <div className='container p-0'>
+                    <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3'>
+                        {thanksLoading ? (
+                            <Spinner animation="grow" />
+                        ) : (
+                            thanks.map((item, j) => (
+                                <div key={j} className='col p-0'>
+                                    <div className='bg-light rounded m-1'>
+                                        <div className='p-2 text-center'>
+                                            {item?.description}
+                                        </div>
+                                        <div className='p-2'>
+                                            {item.emotions.length !== 0 && item.emotions.map((emotion, i) => (
+                                                <button
+                                                    key={i}
+                                                    type="button"
+                                                    className={`border-success btn m-1 rounded-pill ${emotion.level > 5 ? 'text-light' : ''}`}
+                                                    style={{ 
+                                                        backgroundColor: bd_color['positive'][emotion.level],
+                                                        font: 'inherit',
+                                                    }}
+                                                >
+                                                    {emotion.name}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )))}
                     </div>
-                )))}
+                </div>
+            </div>
 
             {thanksError && (
                 <p className="mt-3" style={{ color: 'red' }}>

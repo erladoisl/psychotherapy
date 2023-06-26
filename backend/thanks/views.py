@@ -31,17 +31,16 @@ class ThanksView(APIView):
         if desription:
             thanks = Thanks.objects.create(
                 user=request.user, description=desription)
-            print(thanks_emotions)
+
             for item in thanks_emotions:
                 ThanksEmotion.objects.create(
-                    thanks=thanks, 
-                    emotion=Emotion.objects.get(id=item['value']), 
-                    level=item['level'])
+                    thanks=thanks,
+                    emotion=Emotion.objects.get(id=item['value']),
+                    level=item.get('level', 5))
 
             return Response(ThanksSerializer(thanks).data, status=status.HTTP_201_CREATED)
 
         return Response({'err': 'Ошибка ввода данных'}, status=status.HTTP_400_BAD_REQUEST)
-
 
     def delete(self, request, *args, **kwargs):
         ''' Deleting authenticated user's thanks by uuid '''

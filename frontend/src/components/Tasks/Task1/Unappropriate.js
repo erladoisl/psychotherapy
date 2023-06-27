@@ -6,8 +6,8 @@ import {
     selectTasks,
     selectTasksLoading,
     selectTasksError,
-    getTasks,
-    newTask
+    getEnties,
+    newEntry
 } from '../../../reducers/taskSlice';
 import {
     selectEmotions,
@@ -18,35 +18,84 @@ export default function Unappropriate() {
     const tasks = useSelector(selectTasks);
     const tasksLoading = useSelector(selectTasksLoading);
     const tasksError = useSelector(selectTasksError);
+    const [show_form, set_show_form] = useState(false);
+    const [situation, set_situation] = useState('');
+    const [feelings_actions, set_feelings_actions] = useState('');
+    const [desired_feelings_actions, set_desired_feelings_actions] = useState('');
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getTasks('task1'));
+        dispatch(getEnties('task1'));
     }, [dispatch]);
 
     useEffect(() => {
         dispatch(getEmotions(true));
     }, [dispatch]);
 
+    const new_event = () => {
+        dispatch(newEntry({situation, feelings_actions, desired_feelings_actions}, 'task1'))
+    }
+
     return (
         <div className='container'>
             <div className="mt-5 p-5 mb-4 rounded bg-light" >
                 <div className="col-md-8 px-0">
                     <h1 className="col-9 display-4 fst-italic">Осознание неоправданных чувств и поведения</h1>
-                    <p className="lead my-3">Наблюдай за собой и определяй, когда ты бурно реагируешь или расстраиваешься или ты испытываешь:
+                    <div className="lead my-3">Наблюдай за собой и определяй, когда ты бурно реагируешь или расстраиваешься или ты испытываешь:
                         <ul>
                             <li>чрезмерное волнение или беспокойство</li>
                             <li>сильный гнев или обиду</li>
                             <li>глубокое уныние или чрезмерное чувство вины</li>
                             <li>чрезмерное волнение</li>
                         </ul>
-                    </p>
+                    </div>
                     <p className="lead my-3">В помощь тебе будет данное упражнение, в котором тебе нужно добавлять записи в таблицу, которая находится ниже.</p>
-                    <a className="btn btn-outline-secondary" onClick={() => alert('Ожидается переход на нижнюю часть таблицы со строкой ввода новых данных')}>Добавить</a>
+                    <a className="btn btn-outline-secondary" onClick={() => set_show_form(true)}>Добавить</a>
                 </div>
 
             </div>
-            <table class="table table-striped">
+            {show_form && (
+                <form className="card p-2" onSubmit={new_event}>
+                    <h4 className="ms-3 mb-3">Новая запись</h4>
+                    <div className="row g-3">
+                        <div className="col-12">
+                            <label for="address2" class="form-label">Описание ситуации <span className="text-muted"></span></label>
+                            <textarea
+                                type="text"
+                                value={situation}
+                                onChange={e => set_situation(e.target.value)}
+                                className="form-control"
+                                placeholder="Пример: Начал работу над важным отчетом..." />
+                        </div>
+                        <br />
+                        <div className="col-12">
+                            <label for="address2" class="form-label">Описание чувств и поведения <span className="text-muted"></span></label>
+                            <textarea
+                                type="text"
+                                value={feelings_actions}
+                                onChange={e => set_feelings_actions(e.target.value)}
+                                className="form-control"
+                                placeholder="Пример: Вялость - поиск других более или менее важных дел..." />
+                        </div>
+                        <br />
+                        <div className="col-12">
+                            <label for="address2" class="form-label">Описание чувств и поведения, которые привели бы к нужному для тебя исходу <span className="text-muted"></span></label>
+                            <textarea
+                                type="text"
+                                value={desired_feelings_actions}
+                                onChange={e => set_desired_feelings_actions(e.target.value)}
+                                className="form-control"
+                                placeholder="Пример: Отложил работу над крупным проектом и начал работать над тем, что по силам сейчас..." />
+                        </div>
+                        <div className="col-12">
+                            <button type="submit" className="btn btn-secondary w-100 btn-lg">Сохранить</button>
+                        </div>
+                    </div>
+                </form>
+            )}
+            <hr className='my-5' />
+            <h3 className='text-center'>Мои записи:</h3>
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -56,18 +105,14 @@ export default function Unappropriate() {
                     </tr>
                 </thead>
                 <tbody>
-                    {tasksLoading ? (
-                        <Spinner animation="grow" />
-                    ) : (
-                        tasks.map((item, j) => (
-
-                            <tr>
-                                <th scope="row">{j + 1}</th>
-                                <th scope="row">{item.feelings_actions}</th>
-                                <th scope="row">{item.situation}</th>
-                                <th scope="row">{item.desired_feelings_actions}</th>
-                            </tr>
-                        )))}
+                    {tasks.map((item, j) => (
+                        <tr key={j}>
+                            <th scope="row">{j + 1}</th>
+                            <th scope="row">{item.feelings_actions}</th>
+                            <th scope="row">{item.situation}</th>
+                            <th scope="row">{item.desired_feelings_actions}</th>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>

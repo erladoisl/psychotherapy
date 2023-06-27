@@ -16,7 +16,7 @@ export const taskSlice = createSlice({
 			state.error = null;
 		},
 		loadNewTasks: (state, action) => {
-			state.tasks = [...state.tasks, action.payload];
+			state.tasks = [action.payload, ...state.tasks];
 			state.loading = false;
 			state.error = null;
 		},
@@ -53,10 +53,10 @@ export const selectTasksError = state => state.tasks.error;
 export const selectIsLoggedIn = state => !!(!state.tasks.loading && state.tasks.tasks);
 
 // THUNKS
-export const getTasks = (task_name) => dispatch => {
+export const getEnties = (task_name) => dispatch => {
 	dispatch(setLoading(true));
 	instance
-		.get(`/tasks/${task_name}`)
+		.get(`/tasks/${task_name}/`)
 		.then(res => {
 			dispatch(loadTasks(res.data))
 		})
@@ -69,10 +69,10 @@ export const getTasks = (task_name) => dispatch => {
 		});
 };
 
-export const newTask = (new_entry, task_name) => dispatch => {
+export const newEntry = (new_entry, task_name) => dispatch => {
 	dispatch(setLoading(true));
 	instance
-		.post(`/tasks/${task_name}`, { new_entry: new_entry })
+		.post(`/tasks/${task_name}/`, new_entry)
 		.then(res => {
 			dispatch(loadNewTasks(res.data))
 		})

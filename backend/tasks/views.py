@@ -18,11 +18,11 @@ class UnappropriateEmotionsView(APIView):
 
     def get(self, request):
         ''' Returns authenticated user's unappropriate_event list '''
-        return Response(UnappropriateEventSerializer(UnappropriateEvent.objects.filter(user=request.user), many=True).data)
+        return Response(UnappropriateEventSerializer(UnappropriateEvent.objects.filter(user=request.user).order_by('-created_at')[:10], many=True).data)
 
     def post(self, request, *args, **kwargs):
         ''' Create new todays unappropriate_event by authenticated user '''
-        situation = request.data.get('situation', None)
+        situation = request.data.get('situation', '')
         feelings_actions = request.data.get('feelings_actions', '')
         desired_feelings_actions = request.data.get(
             'desired_feelings_actions', '')

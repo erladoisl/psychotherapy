@@ -8,7 +8,7 @@ const Header = () => {
   const dispatch = useCallback(useDispatch(), []);
   const user = useSelector(selectUser);
   const userLoading = useSelector(selectIsLoading);
-  const nav_items = [{ name: 'Благодарность', link: '/thanks' },]
+  const nav_items = [{ name: 'Благодарность', link: '/thanks' }, { name: 'Упражнения', link: '/tasks' }]
   const app_name = 'Бережно к себе'
 
   return (

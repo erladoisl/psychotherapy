@@ -35,6 +35,7 @@ class EventsAction(models.Model):
     action = models.ForeignKey(Action, on_delete=models.CASCADE)
     UnappropriateEvent = models.ForeignKey(
         UnappropriateEvent, on_delete=models.CASCADE)
+    level = models.IntegerField(default=1)
     # True if the emotion is real, false if it's user desire
     is_real = models.BooleanField(default=True)
 
@@ -47,6 +48,7 @@ class EventsEmotion(models.Model):
     emotion = models.ForeignKey(Emotion, on_delete=models.CASCADE)
     UnappropriateEvent = models.ForeignKey(
         UnappropriateEvent, on_delete=models.CASCADE)
+    level = models.IntegerField(default=1)
     # True if the emotion is real, false if it's user desire
     is_real = models.BooleanField(default=True)
 

@@ -5,8 +5,8 @@ export default function Tasks() {
             <div className="mt-5 p-5 mb-4 rounded bg-light" >
                 <h3>Упражнения</h3>
 
-                {tasks.map(task => (
-                    <div className="col-md-8 px-0">
+                {tasks.map((task, i) => (
+                    <div key={i} className="col-md-8 px-0">
                         <div>
                             {task.descritpion}
                             <a className="link-dark" href={task.url}>

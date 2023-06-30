@@ -16,7 +16,7 @@ export const thanksSlice = createSlice({
 			state.error = null;
 		},
 		loadNewThanks: (state, action) => {
-			state.thanks = [...state.thanks, action.payload];
+			state.thanks = [action.payload, ...state.thanks];
 			state.loading = false;
 			state.error = null;
 		},

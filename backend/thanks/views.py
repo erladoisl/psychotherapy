@@ -20,7 +20,7 @@ class ThanksView(APIView):
 
     def get(self, request):
         ''' Returns authenticated user's todays thanks list '''
-        return Response(ThanksSerializer(Thanks.objects.filter(user=request.user), many=True).data)
+        return Response(ThanksSerializer(Thanks.objects.filter(user=request.user).order_by('-created_at')[:10], many=True).data)
 
     def post(self, request, *args, **kwargs):
         ''' Create new todays thanks by authenticated user '''

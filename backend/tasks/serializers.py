@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UnappropriateEvent, EventsEmotion
+from .models import UnappropriateEvent, EventsEmotion, BadHabit
 
 
 class EventsEmotionSerializer(serializers.ModelSerializer):
@@ -28,3 +28,11 @@ class UnappropriateEventSerializer(serializers.ModelSerializer):
         model = UnappropriateEvent
         fields = ('uuid', 'feelings_actions', 'situation',
                   'desired_feelings_actions', 'created_at', 'desired_emotions', 'real_emotions')
+
+
+class BadHabitSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BadHabit
+        fields = ('uuid', 'situation', 'beliefs',
+                  'excuses', 'created_at', 'excuses_сhecking', 'necessary_actions', 'actual')

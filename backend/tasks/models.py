@@ -54,3 +54,30 @@ class EventsEmotion(models.Model):
 
     def __str__(self):
         return f"Emotion '{self.emotion.name}' in situation: {self.UnappropriateEvent.situation}"
+
+
+class BadHabit(models.Model):
+    '''
+        Задача из главы 2
+        Изменение устоявшихся деструктивных привычек
+    '''
+    uuid = models.UUIDField(default=uuid4, null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    # описание ситуации, выводящей из себя
+    situation = models.CharField(max_length=500)
+    # неразумные верования, оправдывающие деструктивную реакцию
+    beliefs = models.CharField(max_length=500)
+    # возможные оправдания ситуации
+    excuses = models.CharField(max_length=500)
+    # проверка оправданий, описание
+    excuses_сhecking = models.CharField(max_length=500)
+    # описание действия по борьбе с привычкой
+    necessary_actions = models.CharField(max_length=500)
+    actual = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.situation}"
+
+    class Meta:
+        ordering = ('created_at',)

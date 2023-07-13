@@ -8,6 +8,7 @@ import Login from "./components/User/Login/Login";
 import Registration from "./components/User/Registration/Registration";
 import Thanks from "./components/Thanks/Thanks";
 import Unappropriate from "./components/Tasks/Task1/Unappropriate";
+import Сonfrontation from "./components/Tasks/Task2/Сonfrontation";
 import Tasks from "./components/Tasks/Tasks";
 import NotFound from "./components/NotFound/NotFound";
 import Header from "./components/Header/Header";
@@ -32,6 +33,7 @@ function App() {
             <Route exact path="/thanks" element={<Thanks />} />
             <Route exact path="/tasks" element={<Tasks />} />
             <Route exact path="/task1" element={<Unappropriate />} />
+            <Route exact path="/task2" element={<Сonfrontation />} />
             <Route exact path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

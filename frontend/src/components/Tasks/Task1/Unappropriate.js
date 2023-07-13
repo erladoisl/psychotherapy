@@ -1,23 +1,16 @@
-import Select from 'react-select'
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Spinner } from 'react-bootstrap';
 import {
     selectTasks,
-    selectTasksLoading,
-    selectTasksError,
     getEnties,
     newEntry
 } from '../../../reducers/taskSlice';
 import {
-    selectEmotions,
     getEmotions
 } from '../../../reducers/emotionSlice';
 
 export default function Unappropriate() {
     const tasks = useSelector(selectTasks);
-    const tasksLoading = useSelector(selectTasksLoading);
-    const tasksError = useSelector(selectTasksError);
     const [show_form, set_show_form] = useState(false);
     const [situation, set_situation] = useState('');
     const [feelings_actions, set_feelings_actions] = useState('');
@@ -33,7 +26,7 @@ export default function Unappropriate() {
     }, [dispatch]);
 
     const new_event = () => {
-        dispatch(newEntry({situation, feelings_actions, desired_feelings_actions}, 'task1'))
+        dispatch(newEntry({ situation, feelings_actions, desired_feelings_actions }, 'task1'))
     }
 
     return (

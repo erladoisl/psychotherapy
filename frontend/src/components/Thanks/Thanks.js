@@ -115,7 +115,7 @@ function Thanks() {
                         ) : (
                             thanks.map((item, j) => (
                                 <div key={j} className='col p-0'>
-                                    <div className='bg-light rounded m-1'>
+                                    <div className='bg-light  h-100  rounded m-1'>
                                         <div className='p-2 text-center'>
                                             {item?.description}
                                         </div>

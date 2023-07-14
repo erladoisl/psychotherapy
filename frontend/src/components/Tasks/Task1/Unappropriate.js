@@ -5,9 +5,6 @@ import {
     getEnties,
     newEntry
 } from '../../../reducers/taskSlice';
-import {
-    getEmotions
-} from '../../../reducers/emotionSlice';
 
 export default function Unappropriate() {
     const tasks = useSelector(selectTasks);
@@ -21,12 +18,11 @@ export default function Unappropriate() {
         dispatch(getEnties('task1'));
     }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(getEmotions(true));
-    }, [dispatch]);
-
-    const new_event = () => {
-        dispatch(newEntry({ situation, feelings_actions, desired_feelings_actions }, 'task1'))
+    const new_event = (e) => {
+        e.preventDefault();
+        if (situation && feelings_actions && desired_feelings_actions) {
+            dispatch(newEntry({ situation, feelings_actions, desired_feelings_actions }, 'task1'))
+        }
     }
 
     return (
@@ -54,6 +50,7 @@ export default function Unappropriate() {
                         <div className="col-12">
                             <label for="address2" class="form-label">Описание ситуации <span className="text-muted"></span></label>
                             <textarea
+                                required={true}
                                 type="text"
                                 value={situation}
                                 onChange={e => set_situation(e.target.value)}
@@ -64,6 +61,7 @@ export default function Unappropriate() {
                         <div className="col-12">
                             <label for="address2" class="form-label">Описание чувств и поведения <span className="text-muted"></span></label>
                             <textarea
+                                required={true}
                                 type="text"
                                 value={feelings_actions}
                                 onChange={e => set_feelings_actions(e.target.value)}
@@ -74,6 +72,7 @@ export default function Unappropriate() {
                         <div className="col-12">
                             <label for="address2" class="form-label">Описание чувств и поведения, которые привели бы к нужному для тебя исходу <span className="text-muted"></span></label>
                             <textarea
+                                required={true}
                                 type="text"
                                 value={desired_feelings_actions}
                                 onChange={e => set_desired_feelings_actions(e.target.value)}

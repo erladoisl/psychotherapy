@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectTasks,
     getEnties,
     newEntry
 } from '../../../reducers/taskSlice';
-import {
-    getEmotions
-} from '../../../reducers/emotionSlice';
 
 export default function Сonfrontation() {
     const tasks = useSelector(selectTasks);
@@ -23,9 +20,12 @@ export default function Сonfrontation() {
         dispatch(getEnties('task2'));
     }, [dispatch]);
 
-    const new_event = () => {
-        dispatch(newEntry({situation, beliefs, excuses, excuses_сhecking, necessary_actions}, 'task2'))
-    }
+    const new_event = useCallback(e => {
+        e.preventDefault();
+        if (situation && beliefs && excuses && excuses_сhecking && necessary_actions) {
+            dispatch(newEntry({ situation, beliefs, excuses, excuses_сhecking, necessary_actions }, 'task2'))
+        }
+    })
 
     return (
         <div className='container'>
@@ -51,6 +51,7 @@ export default function Сonfrontation() {
                         <div className="col-12">
                             <label for="address2" class="form-label">Описание ситуации <span className="text-muted"></span></label>
                             <textarea
+                                required={true}
                                 type="text"
                                 value={situation}
                                 onChange={e => set_situation(e.target.value)}
@@ -61,6 +62,7 @@ export default function Сonfrontation() {
                         <div className="col-12">
                             <label for="address2" class="form-label">Описание неразумных верований, оправдывающих деструктивную реакцию <span className="text-muted"></span></label>
                             <textarea
+                                required={true}
                                 type="text"
                                 value={beliefs}
                                 onChange={e => set_beliefs(e.target.value)}
@@ -71,6 +73,7 @@ export default function Сonfrontation() {
                         <div className="col-12">
                             <label for="address2" class="form-label">Возможные оправдания ситуации<span className="text-muted"></span></label>
                             <textarea
+                                required={true}
                                 type="text"
                                 value={excuses}
                                 onChange={e => set_excuses(e.target.value)}
@@ -81,6 +84,7 @@ export default function Сonfrontation() {
                         <div className="col-12">
                             <label for="address2" class="form-label">Ответь: действительно ли существенны оправдания ситуации?<span className="text-muted"></span></label>
                             <textarea
+                                required={true}
                                 type="text"
                                 value={excuses_сhecking}
                                 onChange={e => set_excuses_сhecking(e.target.value)}
@@ -91,6 +95,7 @@ export default function Сonfrontation() {
                         <div className="col-12">
                             <label for="address2" class="form-label">Описание действия по борьбе с привычкой <span className="text-muted"></span></label>
                             <textarea
+                                required={true}
                                 type="text"
                                 value={necessary_actions}
                                 onChange={e => set_necessary_actions(e.target.value)}
